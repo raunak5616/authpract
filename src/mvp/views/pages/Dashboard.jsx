@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useContext, useEffect, useRef, useState } from "react";
-import { AuthContext } from "../../context/Authcontext";
+import { AuthContext } from "../../presenters/AuthContext";
+import { ThemeContext } from "../../presenters/ThemeContext";
 
 const GAME_WIDTH = 760;
 const GAME_HEIGHT = 540;
@@ -23,6 +24,7 @@ const randomGapTop = () => 80 + Math.floor(Math.random() * 180);
 
 export default function FlappyDashboard() {
   const { user, dispatch } = useContext(AuthContext);
+  const { isDark } = useContext(ThemeContext);
   const [birdY, setBirdY] = useState(220);
   const [velocity, setVelocity] = useState(0);
   const [pipes, setPipes] = useState(createPipes);
@@ -254,28 +256,42 @@ export default function FlappyDashboard() {
         : "Game over. Tap to restart";
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,#1e3a8a_0%,#0f172a_50%,#020617_100%)] text-white px-4 py-6 md:px-8">
-      <nav className="mx-auto flex w-full max-w-7xl items-center justify-between rounded-3xl border border-white/10 bg-white/5 px-6 py-4 backdrop-blur-md">
+    <div
+      className={`min-h-screen px-4 py-6 md:px-8 ${
+        isDark
+          ? "bg-[radial-gradient(circle_at_top,#1e3a8a_0%,#0f172a_50%,#020617_100%)] text-white"
+          : "bg-[radial-gradient(circle_at_top,#dbeafe_0%,#f8fbff_45%,#e0f2fe_100%)] text-slate-900"
+      }`}
+    >
+      <nav
+        className={`mx-auto flex w-full max-w-7xl items-center justify-between rounded-3xl border px-6 py-4 backdrop-blur-md ${
+          isDark ? "border-white/10 bg-white/5" : "border-white/80 bg-white/65 shadow-lg shadow-sky-100/70"
+        }`}
+      >
         <div>
           <h1 className="text-2xl font-bold tracking-wide">
-            Flappy<span className="text-sky-300">Dash</span>
+            flapy<span className="text-sky-300">flapy</span>
           </h1>
-          <p className="text-sm text-slate-300">
+          <p className={`text-sm ${isDark ? "text-slate-300" : "text-slate-600"}`}>
             Welcome back, {currentUser?.name || "Player"}
           </p>
         </div>
 
-        <div className="flex gap-3 text-sm text-slate-300">
+        <div className={`flex gap-3 text-sm ${isDark ? "text-slate-300" : "text-slate-600"}`}>
           <button
             type="button"
-            className="rounded-full border border-white/10 px-4 py-2 hover:bg-white/10 transition"
+            className={`rounded-full border px-4 py-2 transition ${
+              isDark ? "border-white/10 hover:bg-white/10" : "border-slate-200 bg-white/60 hover:bg-white"
+            }`}
             onClick={resetGame}
           >
             New Run
           </button>
           <button
             type="button"
-            className="rounded-full border border-white/10 px-4 py-2 hover:bg-white/10 transition"
+            className={`rounded-full border px-4 py-2 transition ${
+              isDark ? "border-white/10 hover:bg-white/10" : "border-slate-200 bg-white/60 hover:bg-white"
+            }`}
             onClick={loadLeaderboard}
           >
             Refresh Board
@@ -285,18 +301,18 @@ export default function FlappyDashboard() {
 
       <div className="mx-auto mt-6 grid w-full max-w-7xl gap-6 xl:grid-cols-[280px_minmax(0,1fr)_320px]">
         <div className="space-y-6">
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-md">
-            <p className="text-sm text-slate-400">Best Score</p>
+          <div className={`rounded-3xl border p-6 shadow-2xl backdrop-blur-md ${isDark ? "border-white/10 bg-white/5" : "border-white/80 bg-white/70"}`}>
+            <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-500"}`}>Best Score</p>
             <h2 className="mt-2 text-5xl font-black">{bestScore}</h2>
           </div>
 
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-md">
-            <p className="text-sm text-slate-400">Games Played</p>
+          <div className={`rounded-3xl border p-6 shadow-2xl backdrop-blur-md ${isDark ? "border-white/10 bg-white/5" : "border-white/80 bg-white/70"}`}>
+            <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-500"}`}>Games Played</p>
             <h2 className="mt-2 text-5xl font-black">{gamesPlayed}</h2>
           </div>
 
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-md">
-            <p className="text-sm text-slate-400">Coins Earned</p>
+          <div className={`rounded-3xl border p-6 shadow-2xl backdrop-blur-md ${isDark ? "border-white/10 bg-white/5" : "border-white/80 bg-white/70"}`}>
+            <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-500"}`}>Coins Earned</p>
             <h2 className="mt-2 text-5xl font-black">{coins}</h2>
           </div>
 
@@ -309,7 +325,7 @@ export default function FlappyDashboard() {
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-[32px] border border-white/10 bg-white/5 shadow-2xl">
+        <div className={`overflow-hidden rounded-[32px] border shadow-2xl ${isDark ? "border-white/10 bg-white/5" : "border-white/80 bg-white/70"}`}>
           <div
             role="button"
             tabIndex={0}
@@ -367,32 +383,32 @@ export default function FlappyDashboard() {
               </div>
             </div>
 
-            <div className="absolute left-1/2 top-5 -translate-x-1/2 rounded-2xl border border-white/20 bg-slate-950/25 px-6 py-3 text-center backdrop-blur-md">
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-200">Current Score</p>
+            <div className={`absolute left-1/2 top-5 -translate-x-1/2 rounded-2xl border px-6 py-3 text-center backdrop-blur-md ${isDark ? "border-white/20 bg-slate-950/25" : "border-white/80 bg-white/70 shadow-lg shadow-sky-100/60"}`}>
+              <p className={`text-xs uppercase tracking-[0.3em] ${isDark ? "text-slate-200" : "text-slate-600"}`}>Current Score</p>
               <h2 className="text-4xl font-black">{score}</h2>
             </div>
 
             <div className="absolute inset-x-0 top-24 flex justify-center px-6">
-              <div className="rounded-full border border-white/20 bg-slate-950/30 px-5 py-2 text-sm text-white backdrop-blur-md">
+              <div className={`rounded-full border px-5 py-2 text-sm backdrop-blur-md ${isDark ? "border-white/20 bg-slate-950/30 text-white" : "border-white/80 bg-white/72 text-slate-700"}`}>
                 {statusLabel}
               </div>
             </div>
 
             {saveMessage && status === "gameover" && (
               <div className="absolute inset-x-0 top-40 flex justify-center px-6">
-                <div className="rounded-full border border-emerald-300/30 bg-emerald-400/20 px-5 py-2 text-sm text-white backdrop-blur-md">
+                <div className={`rounded-full border px-5 py-2 text-sm backdrop-blur-md ${isDark ? "border-emerald-300/30 bg-emerald-400/20 text-white" : "border-emerald-300/60 bg-emerald-100/85 text-emerald-900"}`}>
                   {saveMessage}
                 </div>
               </div>
             )}
 
             {status !== "running" && (
-              <div className="absolute inset-0 flex items-center justify-center bg-slate-950/20">
-                <div className="rounded-3xl border border-white/15 bg-slate-950/55 px-8 py-6 text-center backdrop-blur-lg">
+              <div className={`absolute inset-0 flex items-center justify-center ${isDark ? "bg-slate-950/20" : "bg-white/10"}`}>
+                <div className={`rounded-3xl border px-8 py-6 text-center backdrop-blur-lg ${isDark ? "border-white/15 bg-slate-950/55" : "border-white/80 bg-white/75 shadow-lg shadow-sky-100/80"}`}>
                   <h3 className="text-3xl font-black">
                     {status === "idle" ? "Ready to Fly?" : "Crash Landing"}
                   </h3>
-                  <p className="mt-3 text-slate-200">
+                  <p className={`mt-3 ${isDark ? "text-slate-200" : "text-slate-700"}`}>
                     {status === "idle"
                       ? "Launch the bird and dodge the pipes."
                       : `You scored ${score}. Tap to try again.`}
@@ -418,26 +434,26 @@ export default function FlappyDashboard() {
           </div>
         </div>
 
-        <aside className="rounded-[32px] border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-md">
+        <aside className={`rounded-[32px] border p-6 shadow-2xl backdrop-blur-md ${isDark ? "border-white/10 bg-white/5" : "border-white/80 bg-white/70"}`}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Leaderboard</p>
+              <p className={`text-sm uppercase tracking-[0.3em] ${isDark ? "text-slate-400" : "text-slate-500"}`}>Leaderboard</p>
               <h2 className="mt-2 text-3xl font-black">Top Pilots</h2>
             </div>
-            <div className="rounded-full bg-white/10 px-4 py-2 text-xs text-slate-300">
+            <div className={`rounded-full px-4 py-2 text-xs ${isDark ? "bg-white/10 text-slate-300" : "bg-slate-100 text-slate-600"}`}>
               Top 10
             </div>
           </div>
 
           <div className="mt-6 space-y-3">
             {leaderboardLoading && (
-              <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-5 text-sm text-slate-300">
+              <div className={`rounded-2xl border px-4 py-5 text-sm ${isDark ? "border-white/10 bg-white/5 text-slate-300" : "border-slate-200 bg-white/75 text-slate-600"}`}>
                 Loading leaderboard...
               </div>
             )}
 
             {!leaderboardLoading && leaderboard.length === 0 && (
-              <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-5 text-sm text-slate-300">
+              <div className={`rounded-2xl border px-4 py-5 text-sm ${isDark ? "border-white/10 bg-white/5 text-slate-300" : "border-slate-200 bg-white/75 text-slate-600"}`}>
                 No scores yet. Play the first round.
               </div>
             )}
@@ -448,23 +464,27 @@ export default function FlappyDashboard() {
                   key={entry.id}
                   className={`rounded-2xl border px-4 py-4 ${
                     entry.id === currentUser?.id
-                      ? "border-sky-300/40 bg-sky-300/15"
-                      : "border-white/10 bg-white/5"
+                      ? isDark
+                        ? "border-sky-300/40 bg-sky-300/15"
+                        : "border-sky-300/45 bg-sky-100/80"
+                      : isDark
+                        ? "border-white/10 bg-white/5"
+                        : "border-slate-200 bg-white/75"
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
+                      <p className={`text-xs uppercase tracking-[0.3em] ${isDark ? "text-slate-400" : "text-slate-500"}`}>
                         Rank #{entry.rank}
                       </p>
                       <h3 className="mt-1 text-lg font-bold">{entry.name}</h3>
                     </div>
                     <div className="text-right">
-                      <p className="text-xs text-slate-400">Best</p>
+                      <p className={`text-xs ${isDark ? "text-slate-400" : "text-slate-500"}`}>Best</p>
                       <p className="text-2xl font-black">{entry.bestScore}</p>
                     </div>
                   </div>
-                  <div className="mt-3 flex justify-between text-sm text-slate-300">
+                  <div className={`mt-3 flex justify-between text-sm ${isDark ? "text-slate-300" : "text-slate-600"}`}>
                     <span>{entry.gamesPlayed} games</span>
                     <span>{entry.coins} coins</span>
                   </div>

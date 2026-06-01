@@ -1,6 +1,6 @@
 
 import './App.css'
-import { AppRouter } from './Routes/AppRouter'
+import { AppRouter } from './mvp/presenters/AppRouter'
 
 
 function App() {

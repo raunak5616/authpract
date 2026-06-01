@@ -1,10 +1,10 @@
 import { useContext } from "react"
 import { Navigate, Route, Routes } from "react-router-dom"
-import { Login } from "../../pages/login"
-import { Signup } from "../../pages/signup"
-import { Navbar } from "../../component/navbar"
-import FlappyDashboard from "../../pages/dashboard"
-import { AuthContext } from "../../context/Authcontext"
+import { Login } from "../views/pages/Login"
+import { Signup } from "../views/pages/Signup"
+import { Navbar } from "../views/components/Navbar"
+import FlappyDashboard from "../views/pages/Dashboard"
+import { AuthContext } from "./AuthContext"
 
 const ProtectedRoute = ({ children }) => {
     const { user } = useContext(AuthContext);
